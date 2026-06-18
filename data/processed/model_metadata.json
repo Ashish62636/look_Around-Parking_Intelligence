@@ -1,0 +1,24 @@
+{
+  "feature_importance": {
+    "severity_mean": 0.0,
+    "hour_std": 0.0,
+    "weekday_pct": 0.0,
+    "vehicle_diversity": 5.6,
+    "unique_vehicles": 85.8,
+    "recurrence_score": 5.6,
+    "hotspot_density": 2.9
+  },
+  "metrics": {
+    "mae": 0.03469371424352219,
+    "r2": 0.9978852521356606
+  },
+  "feature_cols": [
+    "severity_mean",
+    "hour_std",
+    "weekday_pct",
+    "vehicle_diversity",
+    "unique_vehicles",
+    "recurrence_score",
+    "hotspot_density"
+  ]
+}
