@@ -12,7 +12,8 @@ const headers: HeadersInit = {
 };
 
 async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
+  const baseUrl = import.meta.env.VITE_API_URL || "";
+  const response = await fetch(`${baseUrl}${url}`, {
     ...init,
     headers: { ...headers, ...init?.headers },
   });

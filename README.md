@@ -70,6 +70,11 @@ We built a **lean, zero-ops, in-memory architecture** optimized for hackathon pe
    ```
 2. Open your browser to http://localhost:5173
 
+#### Environment Configuration
+The frontend communicates with the backend via environment variables configured in the `dashboard/` directory:
+- **`dashboard/.env` (Production):** Sets `VITE_API_URL` to the production Railway service (`e.g., https://look-around-backend.up.railway.app`).
+- **`dashboard/.env.local` (Local Dev):** Sets `VITE_API_URL=` to fallback to the Vite local dev server proxy (`http://localhost:8000`), ensuring offline development works out-of-the-box.
+
 ---
 
 ## 4. Interactive Presentation Script (Judges Walkthrough)
