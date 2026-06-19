@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { CongestionScoreResponse } from "../types";
 import {
-  Gauge,
   X,
   ArrowLeft,
   MapPin,

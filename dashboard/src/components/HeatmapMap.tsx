@@ -106,8 +106,8 @@ export function HeatmapMap({
   }, [geojson, selectedH3, maxCount, onCellClick]);
 
   const handleViewStateChange = useCallback(
-    ({ viewState: vs }: { viewState: MapViewState }) => {
-      onViewStateChange(vs);
+    (params: any) => {
+      onViewStateChange(params.viewState as MapViewState);
     },
     [onViewStateChange]
   );
@@ -115,7 +115,7 @@ export function HeatmapMap({
   return (
     <div className="relative w-full h-full">
       <DeckGL
-        viewState={viewState}
+        viewState={viewState as any}
         onViewStateChange={handleViewStateChange}
         controller={true}
         layers={layers}
@@ -209,7 +209,12 @@ export function HeatmapMap({
 
         {/* Continuous Color Bar with Hover Hitboxes */}
         <div className="relative h-3 rounded-full mb-1.5 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-cyan via-accent-emerald via-accent-amber via-accent-red/80 to-accent-red" />
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: "linear-gradient(to right, var(--color-accent-cyan), var(--color-accent-emerald) 30%, var(--color-accent-amber) 50%, var(--color-tier-high) 75%, var(--color-accent-red))",
+            }}
+          />
 
           {/* Transparent Hover Hitboxes */}
           <div className="absolute inset-0 flex">
