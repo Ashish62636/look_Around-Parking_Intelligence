@@ -15,6 +15,13 @@ class CongestionScoreResponse(BaseModel):
     score: float = Field(..., description="Normalized congestion-impact score (0.0 to 1.0)")
     violation_count: int = Field(..., description="Total violations associated with this entity")
     contributing_factors: List[str] = Field(..., description="Human-readable breakdown of contributing congestion factors")
+    hotspot_cells: Optional[int] = Field(None, description="Number of chronic hotspot grid cells")
+    total_cells: Optional[int] = Field(None, description="Total spatial cells under jurisdiction")
+    recurrence_rate: Optional[float] = Field(None, description="Ratio of repeat offender vehicle plates")
+    severity_index: Optional[float] = Field(None, description="Average violation severity index (0.0 to 1.0)")
+    peak_hour: Optional[int] = Field(None, description="Temporal peak hour of violations (0-23)")
+    confidence_score: Optional[float] = Field(None, description="Model prediction confidence score (0.0 to 1.0)")
+
 
 
 class PriorityQueueItem(BaseModel):

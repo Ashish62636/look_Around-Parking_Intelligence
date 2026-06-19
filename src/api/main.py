@@ -322,12 +322,20 @@ async def get_congestion_score(
         factors.append(f"Violation Severity: Average violation severity index is {sev:.2f}/1.0, influenced by traffic-blocking offences.")
         factors.append(f"Temporal Peak: Violation intensity peaks around hour {h_peak:02d}:00 IST, correlating with traffic congestion hours.")
 
+        confidence = 0.85 + 0.13 * (min(violations, 5000) / 5000)
+
         return CongestionScoreResponse(
             query_type="station",
             name=str(row["police_station"]),
             score=score,
             violation_count=violations,
             contributing_factors=factors,
+            hotspot_cells=hotspots,
+            total_cells=total_c,
+            recurrence_rate=recurrence,
+            severity_index=sev,
+            peak_hour=h_peak,
+            confidence_score=confidence,
         )
 
     # 2. Junction Name Lookup (Dynamic aggregation over cells)
@@ -364,20 +372,28 @@ async def get_congestion_score(
             top_row = cell_scores.sort_values("violation_count", ascending=False).iloc[0]
             police_st = str(top_row["police_station"])
             top_viol = str(top_row["top_violation"])
+            h_peak = int(top_row.get("hour_peak", 12))
+            hotspots = int(cell_scores["is_hotspot"].sum())
         else:
             score = 0.5
             recurrence = 0.0
             sev = 0.5
             police_st = "Unknown"
             top_viol = "Unknown"
+            h_peak = 12
+            hotspots = 0
+
+        total_c = len(associated_cells)
 
         factors = [
-            f"Spatial Context: Located in {len(associated_cells)} street-level hex cell(s) under {police_st} Police Station jurisdiction.",
+            f"Spatial Context: Located in {total_c} street-level hex cell(s) under {police_st} Police Station jurisdiction.",
             f"Primary Offence: '{top_viol}' is the single most dominant violation type recorded here.",
             f"Vehicle Recurrence: Plotted vehicle numbers reveal a {recurrence:.1%} repeat-offence rate in this zone.",
             f"Severity Index: Average severity weight of {sev:.2f}/1.0 indicates impact on traffic lanes.",
             f"Congestion Proxy: LightGBM model score is {score:.3f} based on local spatial density predictors."
         ]
+
+        confidence = 0.80 + 0.18 * (min(violations, 1000) / 1000)
 
         return CongestionScoreResponse(
             query_type="junction",
@@ -385,6 +401,12 @@ async def get_congestion_score(
             score=score,
             violation_count=violations,
             contributing_factors=factors,
+            hotspot_cells=hotspots,
+            total_cells=total_c,
+            recurrence_rate=recurrence,
+            severity_index=sev,
+            peak_hour=h_peak,
+            confidence_score=confidence,
         )
 
 
